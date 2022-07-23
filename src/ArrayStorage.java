@@ -37,7 +37,6 @@ public class ArrayStorage {
         if (index != -1) {
             for (int i = index; i < size - 1; i++) {
                 storage[i] = storage[i + 1];
-                storage[size - 1] = null;
             }
             size--;
         }
