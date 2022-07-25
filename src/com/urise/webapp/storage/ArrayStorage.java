@@ -9,59 +9,60 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
-    private int resumeSearch(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                System.out.println(uuid + " was found");
                 return i;
             }
         }
-        System.out.println(uuid + " wasn\'t found");
         return -1;
     }
 
     public void clear() {
-        Arrays.fill(storage, 0, size - 1, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void updateResume(String uuid) {
-        int index = resumeSearch(uuid);
-        if (index != -1) {
-            //Do something
+    public void update(String uuid, Resume r) {
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.println(uuid + " doesn\'t exist");
+        } else {
+            storage[index] = r;
         }
     }
 
     public void save(Resume r) {
-        if (resumeSearch(r.getUuid()) == -1) {
-            if (size < 10000) {
-                storage[size] = r;
-                size++;
-            } else {
-                System.out.println("Storage is full");
-            }
+        if (size == STORAGE_LIMIT) {
+            System.out.println("Storage is full");
+        } else if (findIndex(r.getUuid()) != -1) {
+            System.out.println(r + " already exists");
+        } else {
+            storage[size] = r;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
-        int index = resumeSearch(uuid);
-        if (index != -1) {
-            return storage[index];
-        } else {
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.println(uuid + " doesn\'t exist");
             return null;
         }
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        int index = resumeSearch(uuid);
-        if (index != -1) {
-            for (int i = index; i < size - 1; i++) {
-                storage[i] = storage[i + 1];
-            }
+        int index = findIndex(uuid);
+        if (index==-1){
+            System.out.println(uuid + " doesn\'t exist");
+        }else{
             size--;
+            storage[index]=storage[size];
             storage[size] = null;
         }
     }
