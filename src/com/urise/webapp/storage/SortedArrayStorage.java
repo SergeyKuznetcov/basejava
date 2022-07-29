@@ -1,30 +1,23 @@
 package com.urise.webapp.storage;
 
-
 import com.urise.webapp.model.Resume;
 
-/**
- * Array based storage for Resumes
- */
-public class ArrayStorage extends AbstractArrayStorage{
+import java.util.Arrays;
 
+public class SortedArrayStorage extends AbstractArrayStorage{
     @Override
     protected int findIndex(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
+        return Arrays.binarySearch(storage,0,size,new Resume(uuid));
     }
 
     @Override
     public void update(String uuid, Resume r) {
         int index = findIndex(uuid);
-        if (index == -1) {
+        if (index < 0){
             System.out.println(uuid + " doesn\'t exist");
         } else {
-            storage[index] = r;
+            delete(uuid);
+            save(r);
         }
     }
 
@@ -34,10 +27,19 @@ public class ArrayStorage extends AbstractArrayStorage{
             System.out.println("Storage is full");
             return;
         }
-        if (findIndex(r.getUuid()) != -1) {
+        int index = findIndex((r.getUuid()));
+        if (index > -1) {
             System.out.println(r + " already exists");
         } else {
-            storage[size] = r;
+            index = -(index+1);
+            if (index==size){
+                storage[size] = r;
+            }else {
+                for (int i = size; i > index; i--) {
+                    storage[i] = storage[i-1];
+                }
+                storage[index]=r;
+            }
             size++;
         }
     }
@@ -45,7 +47,7 @@ public class ArrayStorage extends AbstractArrayStorage{
     @Override
     public Resume get(String uuid) {
         int index = findIndex(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.println(uuid + " doesn\'t exist");
             return null;
         }
@@ -55,11 +57,14 @@ public class ArrayStorage extends AbstractArrayStorage{
     @Override
     public void delete(String uuid) {
         int index = findIndex(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.println(uuid + " doesn\'t exist");
         } else {
+            storage[index]=null;
+            for (int i = index; i < size; i++) {
+                storage[i]=storage[i+1];
+            }
             size--;
-            storage[index] = storage[size];
             storage[size] = null;
         }
     }
