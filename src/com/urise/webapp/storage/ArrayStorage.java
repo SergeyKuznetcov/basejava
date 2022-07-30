@@ -19,16 +19,6 @@ public class ArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
-    public void update(String uuid, Resume r) {
-        int index = findIndex(uuid);
-        if (index == -1) {
-            System.out.println(uuid + " doesn\'t exist");
-        } else {
-            storage[index] = r;
-        }
-    }
-
-    @Override
     public void save(Resume r) {
         if (size == STORAGE_LIMIT) {
             System.out.println("Storage is full");
@@ -40,16 +30,6 @@ public class ArrayStorage extends AbstractArrayStorage{
             storage[size] = r;
             size++;
         }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index == -1) {
-            System.out.println(uuid + " doesn\'t exist");
-            return null;
-        }
-        return storage[index];
     }
 
     @Override
