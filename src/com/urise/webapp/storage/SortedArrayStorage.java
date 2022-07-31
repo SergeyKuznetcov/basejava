@@ -4,47 +4,40 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public class SortedArrayStorage extends AbstractArrayStorage{
+public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected int findIndex(String uuid) {
-        return Arrays.binarySearch(storage,0,size,new Resume(uuid));
+        return Arrays.binarySearch(storage, 0, size, new Resume(uuid));
     }
 
     @Override
-    public void save(Resume r) {
-        if (size == STORAGE_LIMIT) {
-            System.out.println("Storage is full");
-            return;
-        }
-        int index = findIndex((r.getUuid()));
-        if (index > -1) {
-            System.out.println(r + " already exists");
+    protected void insertElement(Resume r) {
+        int index = -(findIndex(r.getUuid()) + 1);
+        if (index == size) {
+            storage[size] = r;
         } else {
-            index = -(index+1);
-            if (index==size){
-                storage[size] = r;
-            }else {
-                for (int i = size; i > index; i--) {
-                    storage[i] = storage[i-1];
-                }
-                storage[index]=r;
+            for (int i = size; i > index; i--) {
+                storage[i] = storage[i - 1];
             }
-            size++;
+            storage[index] = r;
         }
+        size++;
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            System.out.println(uuid + " doesn\'t exist");
-        } else {
-            storage[index]=null;
-            for (int i = index; i < size; i++) {
-                storage[i]=storage[i+1];
-            }
-            size--;
-            storage[size] = null;
+    protected void deleteElement(int index) {
+        storage[index] = null;
+        for (int i = index; i < size; i++) {
+            storage[i] = storage[i + 1];
         }
+        size--;
+        storage[size] = null;
+    }
+
+    @Override
+    protected void updateElement(String uuid, Resume r) {
+        deleteElement(findIndex(uuid));
+        insertElement(r);
     }
 }
+

@@ -19,28 +19,20 @@ public class ArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
-    public void save(Resume r) {
-        if (size == STORAGE_LIMIT) {
-            System.out.println("Storage is full");
-            return;
-        }
-        if (findIndex(r.getUuid()) != -1) {
-            System.out.println(r + " already exists");
-        } else {
-            storage[size] = r;
-            size++;
-        }
+    protected void insertElement(Resume r) {
+        storage[size] = r;
+        size++;
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index == -1) {
-            System.out.println(uuid + " doesn\'t exist");
-        } else {
-            size--;
-            storage[index] = storage[size];
-            storage[size] = null;
-        }
+    protected void deleteElement(int index) {
+        size--;
+        storage[index] = storage[size];
+        storage[size] = null;
+    }
+
+    @Override
+    protected void updateElement(String uuid, Resume r) {
+        storage[findIndex(uuid)]=r;
     }
 }
