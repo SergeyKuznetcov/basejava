@@ -11,18 +11,12 @@ public abstract class AbstractArrayStorage implements Storage{
 
     protected abstract int findIndex(String uuid);
 
-    protected abstract void insertElement(Resume r);
+    protected abstract void insertElement(Resume r, int index);
 
     protected abstract void deleteElement(int index);
 
-    protected abstract void updateElement(String uuid, Resume r);
-
-    private boolean isExist(String uuid) {
-        if (findIndex(uuid) < 0){
-            return false;
-        } else{
-            return true;
-        }
+    private boolean isExist(int index) {
+            return index>=0;
     }
 
     @Override
@@ -33,22 +27,24 @@ public abstract class AbstractArrayStorage implements Storage{
 
     @Override
     public void update(String uuid, Resume r) {
-        if (!isExist(uuid)){
+        int index = findIndex(uuid);
+        if (!isExist(index)){
             System.out.println(uuid + " doesn\'t exist");
         } else {
-            updateElement(uuid,r);
+            storage[index]=r;
         }
     }
 
     @Override
     public void save(Resume r) {
+        int index= findIndex(r.getUuid());
         if (size == STORAGE_LIMIT) {
             System.out.println("Storage is full");
-            return;
-        } else if (isExist(r.getUuid())){
+        } else if (isExist(index)){
             System.out.println(r + " already exists");
         } else {
-            insertElement(r);
+            insertElement(r,-(index+1));
+            size++;
         }
     }
 
@@ -64,10 +60,12 @@ public abstract class AbstractArrayStorage implements Storage{
 
     @Override
     public void delete(String uuid){
-        if (!isExist(uuid)) {
+        int index= findIndex(uuid);
+        if (!isExist(index)) {
             System.out.println(uuid + " doesn\'t exist");
         } else {
-            deleteElement(findIndex(uuid));
+            deleteElement(index);
+            size--;
         }
     }
 
