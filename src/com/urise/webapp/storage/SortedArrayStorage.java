@@ -12,7 +12,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insertElement(Resume r, int index) {
-        System.arraycopy(storage,index,storage,index+1,size-index+1);
+        System.arraycopy(storage,index,storage,index+1,size-index);
         storage[index] = r;
     }
 
