@@ -1,12 +1,11 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ArrayStorageTest extends AbstractArrayStorageTest{
-    private ArrayStorage arrayStorage = (ArrayStorage) storage;
+    private final ArrayStorage arrayStorage = (ArrayStorage) storage;
 
     ArrayStorageTest() {
         super(new ArrayStorage());
@@ -14,25 +13,23 @@ class ArrayStorageTest extends AbstractArrayStorageTest{
 
     @Test
     void findIndex() {
-        Assertions.assertEquals(3,arrayStorage.findIndex("uuid6"));
-        Assertions.assertEquals(-1,arrayStorage.findIndex("uuid10"));
+        Assertions.assertEquals(1,arrayStorage.findIndex(UUID_2));
+        Assertions.assertEquals(-1,arrayStorage.findIndex(UUID_NOT_EXIST));
     }
 
     @Test
     void insertElement() {
-        Resume testVal = new Resume("uuid2");
-        arrayStorage.insertElement(testVal,5);
+        arrayStorage.insertElement(RESUME_4,3);
         arrayStorage.size++;
-        Assertions.assertEquals(testVal,arrayStorage.get(testVal.getUuid()));
+        assertGet(RESUME_4);
     }
 
     @Test
     void deleteElement() {
-        arrayStorage.deleteElement(3);
+        arrayStorage.deleteElement(1);
         arrayStorage.size--;
-        NotExistStorageException thrown = Assertions.assertThrows(NotExistStorageException.class, () -> {
-            arrayStorage.get("uuid6");
+        Assertions.assertThrows(NotExistStorageException.class, () -> {
+            arrayStorage.get(RESUME_2.getUuid());
         });
-        Assertions.assertEquals(-1,arrayStorage.findIndex("uuid6"));
     }
 }
