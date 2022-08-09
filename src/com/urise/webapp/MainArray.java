@@ -21,7 +21,7 @@ public class MainArray {
         Resume r;
         while (true) {
             String[] params;
-            if (ARRAY_STORAGE==null) {
+            if (ARRAY_STORAGE == null) {
                 System.out.println("Введите одну из команд - (sorted | unsorted | exit): ");
                 params = reader.readLine().trim().toLowerCase().split(" ");
                 if (params.length < 1 || params.length > 2) {
@@ -60,7 +60,7 @@ public class MainArray {
                     case "update":
                         System.out.println("Введите страрое и новое значение.");
                         params = reader.readLine().trim().toLowerCase().split(" ");
-                        ARRAY_STORAGE.update(params[0],new Resume(params[1]) );
+                        ARRAY_STORAGE.update(params[0], new Resume(params[1]));
                         printAll();
                         break;
                     case "list":

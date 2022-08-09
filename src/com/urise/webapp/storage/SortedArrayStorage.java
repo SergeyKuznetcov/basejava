@@ -12,13 +12,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insertElement(Resume r, int index) {
-        System.arraycopy(storage,index,storage,index+1,size-index);
+        System.arraycopy(storage, index, storage, index + 1, size - index);
         storage[index] = r;
     }
 
     @Override
     protected void deleteElement(int index) {
-        System.arraycopy(storage,index+1,storage,index,size-index-1);
+        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
         storage[size] = null;
     }
 }

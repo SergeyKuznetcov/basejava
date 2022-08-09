@@ -19,6 +19,7 @@ abstract class AbstractArrayStorageTest {
     static final Resume RESUME_2 = new Resume(UUID_2);
     static final Resume RESUME_3 = new Resume(UUID_3);
     static final Resume RESUME_4 = new Resume(UUID_4);
+    static final Resume[] RESUMES_LIST = {RESUME_1, RESUME_2, RESUME_3};
 
     AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -44,7 +45,7 @@ abstract class AbstractArrayStorageTest {
     @Test
     void clear() {
         storage.clear();
-        Assertions.assertEquals(0, storage.size());
+        assertSize(0);
     }
 
     @Test
@@ -57,7 +58,7 @@ abstract class AbstractArrayStorageTest {
     @Test
     void update() {
         storage.update(RESUME_2.getUuid(),RESUME_4);
-        Assertions.assertTrue(RESUME_4 == storage.get(RESUME_4.getUuid()));
+        assertGet(RESUME_4);
     }
 
     @Test
@@ -77,13 +78,9 @@ abstract class AbstractArrayStorageTest {
     @Test
     void saveOverflow(){
         storage.clear();
-        try{
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
-        }catch (StorageException e){
-            Assertions.fail("Early overflow");
-        }
         Assertions.assertThrows(StorageException.class, () -> {
             storage.save(new Resume());
         });
@@ -123,6 +120,7 @@ abstract class AbstractArrayStorageTest {
     void getAll() {
         Resume[] resumes = storage.getAll();
         Assertions.assertEquals(storage.size(),resumes.length);
+        Assertions.assertArrayEquals(RESUMES_LIST,resumes);
         for (Resume r :
                 resumes) {
             Assertions.assertNotNull(r);
