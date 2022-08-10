@@ -8,7 +8,7 @@ public class ListStorage extends AbstractStorage{
     private final ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
-    protected int findIndex(String uuid){
+    protected int findSearchKey(String uuid){
         for (Resume r :
                 storage) {
             if (r.getUuid().equals(uuid)){
