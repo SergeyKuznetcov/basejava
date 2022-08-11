@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 abstract class AbstractStorageTest {
     protected final Storage storage;
     protected static final String UUID_1 = "uuid1";
@@ -106,6 +108,7 @@ abstract class AbstractStorageTest {
     @Test
     void getAll() {
         Resume[] resumes = storage.getAll();
+        Arrays.sort(resumes);
         Assertions.assertEquals(storage.size(),resumes.length);
         Assertions.assertArrayEquals(RESUMES_LIST,resumes);
         for (Resume r :
