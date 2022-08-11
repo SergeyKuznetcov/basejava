@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    private final HashMap<Integer, Resume> storage = new HashMap<>();
+    private final HashMap<String, Resume> storage = new HashMap<>();
 
 
     @Override
@@ -22,17 +22,17 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(int index) {
-        return storage.get(index);
+        return storage.get(index + "");
     }
 
     @Override
     protected void updateResume(int index, Resume resume) {
-        storage.replace(index, resume);
+        storage.replace(index + "", resume);
     }
 
     @Override
     protected void saveResume(Resume resume, int index) {
-        storage.put(resume.hashCode(), resume);
+        storage.put(resume.hashCode() + "", resume);
     }
 
     @Override
@@ -47,17 +47,22 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(int index) {
-        storage.remove(index);
+        storage.remove(index + "");
     }
 
     @Override
     protected int findSearchKey(String uuid) {
-        for (Map.Entry<Integer, Resume> entry :
+        for (Map.Entry<String, Resume> entry :
                 storage.entrySet()) {
             if (entry.getValue().getUuid().equals(uuid)) {
-                return entry.getKey();
+                return Integer.parseInt(entry.getKey());
             }
         }
         return -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return storage.containsKey(searchKey + "");
     }
 }
