@@ -10,34 +10,34 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract int getSize();
 
-    protected abstract Resume getResume(int index);
+    protected abstract Resume getResume(Object searchKey);
 
-    protected abstract void updateResume(int index, Resume resume);
+    protected abstract void updateResume(Object searchKey, Resume resume);
 
-    protected abstract void saveResume(Resume resume, int index);
+    protected abstract void saveResume(Resume resume, Object searchKey);
 
     protected abstract Resume[] getAllResumes();
 
-    protected abstract void deleteResume(int index);
+    protected abstract void deleteResume(Object searchKey);
 
-    protected abstract int findSearchKey(String uuid);
+    protected abstract Object findSearchKey(String uuid);
 
     protected abstract boolean isExist(Object searchKey);
 
     private Object getNotExistingSearchKey(String uuid) {
-        int index = findSearchKey(uuid);
-        if (isExist(index)) {
+        Object searchKey = findSearchKey(uuid);
+        if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
-        return index;
+        return searchKey;
     }
 
     private Object getExistingSearchKey(String uuid) {
-        int index = findSearchKey(uuid);
-        if (!isExist(index)) {
+        Object searchKey = findSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return index;
+        return searchKey;
     }
 
     @Override
@@ -47,22 +47,22 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(String uuid, Resume r) {
-        updateResume((Integer) getExistingSearchKey(uuid), r);
+        updateResume(getExistingSearchKey(uuid), r);
     }
 
     @Override
     public void save(Resume r) {
-        saveResume(r, (Integer) getNotExistingSearchKey(r.getUuid()));
+        saveResume(r, getNotExistingSearchKey(r.getUuid()));
     }
 
     @Override
     public Resume get(String uuid) {
-        return getResume((Integer) getExistingSearchKey(uuid));
+        return getResume(getExistingSearchKey(uuid));
     }
 
     @Override
     public void delete(String uuid) {
-        deleteResume((Integer) getExistingSearchKey(uuid));
+        deleteResume(getExistingSearchKey(uuid));
     }
 
     @Override
