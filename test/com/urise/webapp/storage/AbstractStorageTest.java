@@ -31,7 +31,7 @@ abstract class AbstractStorageTest {
     }
 
     protected void assertGet(Resume resume){
-        Assertions.assertTrue(resume == storage.get(resume.getUuid()));
+        Assertions.assertSame(resume, storage.get(resume.getUuid()));
     }
 
     @BeforeEach

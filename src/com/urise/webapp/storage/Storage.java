@@ -4,6 +4,8 @@ import com.urise.webapp.model.Resume;
 
 public interface Storage {
 
+    void clear();
+
     void update(String uuid, Resume r);
 
     void save(Resume r);
