@@ -7,6 +7,10 @@ import java.util.ArrayList;
 public class ListStorage extends AbstractStorage{
     private final ArrayList<Resume> storage = new ArrayList<>();
 
+    private void clear() {
+        storage.clear();
+    }
+
     @Override
     protected Object findSearchKey(String uuid){
         for (int i = 0; i < storage.size(); i++) {
@@ -20,11 +24,6 @@ public class ListStorage extends AbstractStorage{
     @Override
     protected boolean isExist(Object searchKey) {
         return ((Integer) searchKey) >= 0;
-    }
-
-    @Override
-    protected void clearStorage() {
-        storage.clear();
     }
 
     @Override
@@ -49,11 +48,7 @@ public class ListStorage extends AbstractStorage{
 
     @Override
     protected Resume[] getAllResumes() {
-        Resume[] resumes = new Resume[storage.size()];
-        for (int i = 0; i < storage.size(); i++) {
-            resumes[i]=storage.get(i);
-        }
-        return resumes;
+        return storage.toArray(new Resume[0]);
     }
 
     @Override

@@ -36,16 +36,9 @@ abstract class AbstractStorageTest {
 
     @BeforeEach
     void setUp() {
-        storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
-    }
-
-    @Test
-    void clear() {
-        storage.clear();
-        assertSize(0);
     }
 
     @Test

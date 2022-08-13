@@ -6,8 +6,6 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract void clearStorage();
-
     protected abstract int getSize();
 
     protected abstract Resume getResume(Object searchKey);
@@ -38,11 +36,6 @@ public abstract class AbstractStorage implements Storage {
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
-    }
-
-    @Override
-    public void clear() {
-        clearStorage();
     }
 
     @Override

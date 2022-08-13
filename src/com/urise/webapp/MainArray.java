@@ -46,7 +46,7 @@ public class MainArray {
                         break;
                 }
             } else {
-                System.out.print("Введите одну из команд - (list | size | save uuid | delete uuid | update oldUuid newUuid | get uuid | clear | exit): ");
+                System.out.print("Введите одну из команд - (list | size | save uuid | delete uuid | update oldUuid newUuid | get uuid | exit): ");
                 params = reader.readLine().trim().toLowerCase().split(" ");
                 if (params.length < 1 || params.length > 2) {
                     System.out.println("Неверная команда.");
@@ -80,10 +80,6 @@ public class MainArray {
                         break;
                     case "get":
                         System.out.println(ARRAY_STORAGE.get(uuid));
-                        break;
-                    case "clear":
-                        ARRAY_STORAGE.clear();
-                        printAll();
                         break;
                     case "exit":
                         return;

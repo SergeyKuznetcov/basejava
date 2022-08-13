@@ -14,15 +14,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void deleteElement(int index);
 
-    @Override
-    protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey >= 0;
+    private void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     @Override
-    protected void clearStorage() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey >= 0;
     }
 
     @Override

@@ -9,9 +9,7 @@ import java.util.Map;
 public class MapStorage extends AbstractStorage {
     private final HashMap<String, Resume> storage = new HashMap<>();
 
-
-    @Override
-    protected void clearStorage() {
+    private void clear() {
         storage.clear();
     }
 
