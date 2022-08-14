@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 abstract class AbstractStorageTest {
     protected final Storage storage;
@@ -15,11 +16,15 @@ abstract class AbstractStorageTest {
     protected static final String UUID_2 = "uuid3";
     protected static final String UUID_3 = "uuid5";
     protected static final String UUID_4 = "uuid6";
+    protected static final String FULL_NAME1 = "fullName1";
+    protected static final String FULL_NAME2 = "fullName3";
+    protected static final String FULL_NAME3 = "fullName5";
+    protected static final String FULL_NAME4 = "fullName6";
     protected static final String UUID_NOT_EXIST = "dummy";
-    protected static final Resume RESUME_1 = new Resume(UUID_1);
-    protected static final Resume RESUME_2 = new Resume(UUID_2);
-    protected static final Resume RESUME_3 = new Resume(UUID_3);
-    protected static final Resume RESUME_4 = new Resume(UUID_4);
+    protected static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME1);
+    protected static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME2);
+    protected static final Resume RESUME_3 = new Resume(UUID_3, FULL_NAME3);
+    protected static final Resume RESUME_4 = new Resume(UUID_4, FULL_NAME4);
     protected static final Resume[] RESUMES_LIST = {RESUME_1, RESUME_2, RESUME_3};
 
     AbstractStorageTest(Storage storage) {
@@ -43,9 +48,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateNotExisting() {
-        Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.update(UUID_NOT_EXIST,new Resume());
-        });
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.update(UUID_NOT_EXIST,new Resume()));
     }
 
     @Test
@@ -66,6 +69,7 @@ abstract class AbstractStorageTest {
         storage.save(RESUME_4);
         assertSize(4);
         assertGet(RESUME_4);
+
     }
 
     @Test
@@ -100,10 +104,9 @@ abstract class AbstractStorageTest {
 
     @Test
     void getAll() {
-        Resume[] resumes = storage.getAll();
-        Arrays.sort(resumes);
-        Assertions.assertEquals(storage.size(),resumes.length);
-        Assertions.assertArrayEquals(RESUMES_LIST,resumes);
+        List<Resume> resumes = storage.getAllSorted();
+        Assertions.assertEquals(storage.size(),resumes.size());
+        Assertions.assertTrue(resumes.containsAll(Arrays.asList(RESUMES_LIST)));
         for (Resume r :
                 resumes) {
             Assertions.assertNotNull(r);

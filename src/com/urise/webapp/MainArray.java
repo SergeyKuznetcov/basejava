@@ -1,13 +1,8 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.AbstractArrayStorage;
-import com.urise.webapp.storage.ArrayStorage;
-import com.urise.webapp.storage.SortedArrayStorage;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Interactive test for com.urise.webapp.storage.ArrayStorage implementation
@@ -17,7 +12,7 @@ public class MainArray {
     private static AbstractArrayStorage ARRAY_STORAGE;
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        /*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;
         while (true) {
             String[] params;
@@ -88,19 +83,10 @@ public class MainArray {
                         break;
                 }
             }
-        }
+        }*/
     }
 
     static void printAll() {
-        Resume[] all = ARRAY_STORAGE.getAll();
-        System.out.println("----------------------------");
-        if (all.length == 0) {
-            System.out.println("Empty");
-        } else {
-            for (Resume r : all) {
-                System.out.println(r);
-            }
-        }
-        System.out.println("----------------------------");
+        System.out.println(ARRAY_STORAGE);
     }
 }
