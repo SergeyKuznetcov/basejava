@@ -4,6 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class AbstractMapStorage extends AbstractStorage{
     protected final HashMap<String, Resume> storage = new HashMap<>();
@@ -29,13 +30,8 @@ public abstract class AbstractMapStorage extends AbstractStorage{
     }
 
     @Override
-    protected Resume[] getAllResumes() {
-        ArrayList<Resume> resumes = new ArrayList<>(storage.values());
-        Resume[] result = new Resume[storage.size()];
-        for (int i = 0; i < resumes.size(); i++) {
-            result[i] = resumes.get(i);
-        }
-        return result;
+    protected List<Resume> getAllResumes() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -44,7 +40,7 @@ public abstract class AbstractMapStorage extends AbstractStorage{
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return storage.containsKey((String) searchKey);
+    protected void saveResume(Resume resume, Object searchKey) {
+        storage.put(resume.getUuid(), resume);
     }
 }

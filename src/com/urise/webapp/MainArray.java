@@ -1,8 +1,12 @@
 package com.urise.webapp;
 
+import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.AbstractArrayStorage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Interactive test for com.urise.webapp.storage.ArrayStorage implementation
@@ -12,6 +16,11 @@ public class MainArray {
     private static AbstractArrayStorage ARRAY_STORAGE;
 
     public static void main(String[] args) throws IOException {
+        Resume[] resumes = {new Resume("Name 1"), new Resume("Name 2"), null, null};
+        List<Resume> list = new ArrayList();
+        list = Arrays.asList(resumes);
+        System.out.println(list);
+
         /*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;
         while (true) {

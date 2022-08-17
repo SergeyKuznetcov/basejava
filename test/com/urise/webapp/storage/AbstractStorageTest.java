@@ -31,11 +31,11 @@ abstract class AbstractStorageTest {
         this.storage = storage;
     }
 
-    protected void assertSize(int size){
+    protected void assertSize(int size) {
         Assertions.assertEquals(size, storage.size());
     }
 
-    protected void assertGet(Resume resume){
+    protected void assertGet(Resume resume) {
         Assertions.assertSame(resume, storage.get(resume.getUuid()));
     }
 
@@ -48,12 +48,12 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateNotExisting() {
-        Assertions.assertThrows(NotExistStorageException.class, () -> storage.update(UUID_NOT_EXIST,new Resume()));
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.update(UUID_NOT_EXIST, new Resume("Dummy")));
     }
 
     @Test
     void update() {
-        storage.update(RESUME_2.getUuid(),RESUME_4);
+        storage.update(RESUME_2.getUuid(), RESUME_4);
         assertGet(RESUME_4);
     }
 
@@ -105,7 +105,7 @@ abstract class AbstractStorageTest {
     @Test
     void getAll() {
         List<Resume> resumes = storage.getAllSorted();
-        Assertions.assertEquals(storage.size(),resumes.size());
+        Assertions.assertEquals(storage.size(), resumes.size());
         Assertions.assertTrue(resumes.containsAll(Arrays.asList(RESUMES_LIST)));
         for (Resume r :
                 resumes) {

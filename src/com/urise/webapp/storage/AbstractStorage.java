@@ -16,7 +16,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void saveResume(Resume resume, Object searchKey);
 
-    protected abstract Resume[] getAllResumes();
+    protected abstract List<Resume> getAllResumes();
 
     protected abstract void deleteResume(Object searchKey);
 
@@ -62,15 +62,8 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>();
-        Collections.addAll(resumes, getAllResumes());
-        resumes.sort((o1, o2) -> {
-            int result = o1.getFullName().compareTo(o2.getFullName());
-            if (result == 0){
-                return o1.getUuid().compareTo(o2.getUuid());
-            }
-            return result;
-        });
+        List<Resume> resumes = getAllResumes();
+        resumes.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
         return resumes;
     }
 
