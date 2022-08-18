@@ -1,6 +1,5 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.AbstractArrayStorage;
 import com.urise.webapp.storage.ArrayStorage;
 import com.urise.webapp.storage.SortedArrayStorage;
@@ -36,12 +35,5 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());*/
-    }
-
-    static void printAll() {
-        System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
-            System.out.println(r);
-        }
     }
 }

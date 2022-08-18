@@ -6,7 +6,7 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -22,8 +22,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override
@@ -32,21 +32,21 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume getResume(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    protected void updateResume(Object searchKey, Resume resume) {
-        storage[(Integer) searchKey] = resume;
+    protected void updateResume(Integer searchKey, Resume resume) {
+        storage[searchKey] = resume;
     }
 
     @Override
-    protected void saveResume(Resume resume, Object searchKey) {
+    protected void saveResume(Resume resume, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-            insertElement(resume, -((Integer) searchKey + 1));
+            insertElement(resume, -(searchKey + 1));
             size++;
         }
     }
@@ -57,8 +57,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
-        deleteElement((Integer) searchKey);
+    protected void deleteResume(Integer searchKey) {
+        deleteElement(searchKey);
         size--;
     }
 }

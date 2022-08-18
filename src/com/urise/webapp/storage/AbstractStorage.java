@@ -6,34 +6,34 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract int getSize();
 
-    protected abstract Resume getResume(Object searchKey);
+    protected abstract Resume getResume(SK searchKey);
 
-    protected abstract void updateResume(Object searchKey, Resume resume);
+    protected abstract void updateResume(SK searchKey, Resume resume);
 
-    protected abstract void saveResume(Resume resume, Object searchKey);
+    protected abstract void saveResume(Resume resume, SK searchKey);
 
     protected abstract List<Resume> getAllResumes();
 
-    protected abstract void deleteResume(Object searchKey);
+    protected abstract void deleteResume(SK searchKey);
 
-    protected abstract Object findSearchKey(String uuid);
+    protected abstract SK findSearchKey(String uuid);
 
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract boolean isExist(SK searchKey);
 
-    protected Object getNotExistingSearchKey(String uuid) {
-        Object searchKey = findSearchKey(uuid);
+    protected SK getNotExistingSearchKey(String uuid) {
+        SK searchKey = findSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    protected Object getExistingSearchKey(String uuid) {
-        Object searchKey = findSearchKey(uuid);
+    protected SK getExistingSearchKey(String uuid) {
+        SK searchKey = findSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractMapStorage extends AbstractStorage {
+public abstract class AbstractMapStorage<SK> extends AbstractStorage<SK> {
     protected final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -21,13 +21,8 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
+    protected Resume getResume(SK searchKey) {
         return storage.get((String) searchKey);
-    }
-
-    @Override
-    protected void updateResume(Object searchKey, Resume resume) {
-        storage.replace((String) searchKey, resume);
     }
 
     @Override
@@ -36,12 +31,12 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
+    protected void deleteResume(SK searchKey) {
         storage.remove((String) searchKey);
     }
 
     @Override
-    protected void saveResume(Resume resume, Object searchKey) {
+    protected void saveResume(Resume resume, SK searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 }
