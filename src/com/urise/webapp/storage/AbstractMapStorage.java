@@ -5,9 +5,10 @@ import com.urise.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractMapStorage extends AbstractStorage{
-    protected final HashMap<String, Resume> storage = new HashMap<>();
+public abstract class AbstractMapStorage extends AbstractStorage {
+    protected final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {

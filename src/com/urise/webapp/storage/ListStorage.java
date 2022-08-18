@@ -5,8 +5,8 @@ import com.urise.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage{
-    private final ArrayList<Resume> storage = new ArrayList<>();
+public class ListStorage extends AbstractStorage {
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -14,9 +14,9 @@ public class ListStorage extends AbstractStorage{
     }
 
     @Override
-    protected Object findSearchKey(String uuid){
+    protected Object findSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
-            if (uuid.equals(storage.get(i).getUuid())){
+            if (uuid.equals(storage.get(i).getUuid())) {
                 return i;
             }
         }
@@ -40,7 +40,7 @@ public class ListStorage extends AbstractStorage{
 
     @Override
     protected void updateResume(Object searchKey, Resume resume) {
-        storage.set((Integer) searchKey,resume);
+        storage.set((Integer) searchKey, resume);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ListStorage extends AbstractStorage{
 
     @Override
     protected List<Resume> getAllResumes() {
-        return storage;
+        return new ArrayList<>(storage);
     }
 
     @Override
