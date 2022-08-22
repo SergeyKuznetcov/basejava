@@ -2,6 +2,7 @@ package com.urise.webapp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Organization {
     private String name;
@@ -18,16 +19,9 @@ public class Organization {
         this.link = link;
     }
 
-    public void addPeriod(String dayFrom, String dayTo, String title, String description){
-        periods.add(new Period(dayFrom,dayTo,title,description));
-    }
-
-    public void addPeriod(String dayFrom, String dayTo, String title){
-        periods.add(new Period(dayFrom,dayTo,title));
-    }
 
     public List<Period> getPeriods() {
-        return new ArrayList<>(periods);
+        return periods;
     }
 
     public String getName() {
@@ -58,5 +52,18 @@ public class Organization {
     @Override
     public String toString() {
         return name + "\n" + link + "\n"+ periodsToString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return name.equals(that.name) && Objects.equals(link, that.link) && periods.equals(that.periods);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, link, periods);
     }
 }

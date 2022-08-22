@@ -1,5 +1,7 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
+
 public class Period {
     private String dateFrom;
     private String dateTo;
@@ -55,5 +57,18 @@ public class Period {
     @Override
     public String toString() {
         return dateFrom + " - " + dateTo + "\n" + title + "\n" + description + "\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Period period = (Period) o;
+        return dateFrom.equals(period.dateFrom) && dateTo.equals(period.dateTo) && title.equals(period.title) && Objects.equals(description, period.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateFrom, dateTo, title, description);
     }
 }

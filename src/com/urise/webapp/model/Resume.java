@@ -1,8 +1,9 @@
 package com.urise.webapp.model;
 
-import com.urise.webapp.exception.StorageException;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Initial resume class
@@ -24,75 +25,17 @@ public class Resume implements Comparable<Resume> {
         this.uuid = uuid;
         this.fullName = fullName;
     }
-    /*-------------------------------------------------------------
-    Methods for contacts
-    --------------------------------------------------------------*/
-    public void addContact(String type, String info){
-        contacts.put(getNotExistingKey(type), info);
-    }
-
-    public String getContact(String type){
-        return contacts.get(getExistingKey(type));
-    }
-
-    public void deleteContact(String type){
-        contacts.remove(getExistingKey(type));
-    }
-
-    public void updateContact(String type, String contact){
-        contacts.replace(getExistingKey(type), contact);
-    }
-
-    public Set<Map.Entry<String, String>> getAllContacts() {
-        return contacts.entrySet();
-    }
     /*-----------------------------------------------------
-    Method for Sections
+    Methods
      ------------------------------------------------------*/
-    public void addSection(SectionType type, Section section){
-        sections.put(getNotExistingKey(type), section);
+
+    public Map<String, String> getContacts() {
+        return contacts;
     }
 
-    public Section getSection(SectionType type){
-        return sections.get(getExistingKey(type));
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
-
-    public void deleteSection(SectionType type){
-        sections.remove(getExistingKey(type));
-    }
-
-    public void updateSection(SectionType type, Section section){
-        sections.replace(getExistingKey(type), section);
-    }
-
-    public Set<Map.Entry<SectionType, Section>> getAllSections() {
-        return sections.entrySet();
-    }
-
-    /*-----------------------------------------------------
-    Generic method
-     ------------------------------------------------------*/
-    private <K> K getExistingKey(K key){
-        if (!isContactExist(key)){
-            throw new StorageException(key + " doesn't exist");
-        }
-        return key;
-    }
-
-    private <K> K getNotExistingKey(K key){
-        if (isContactExist(key)){
-            throw new StorageException(key + " already exist");
-        }
-        return key;
-    }
-
-    private <K> boolean isContactExist(K key){
-        return contacts.containsKey(key);
-    }
-
-    /*-----------------------------------------------------
-    Method for other fields
-     ------------------------------------------------------*/
 
     public String getFullName() {
         return fullName;
@@ -133,5 +76,18 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int compareTo(Resume o) {
         return this.getUuid().compareTo(o.getUuid());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName) && contacts.equals(resume.contacts) && sections.equals(resume.sections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 }
