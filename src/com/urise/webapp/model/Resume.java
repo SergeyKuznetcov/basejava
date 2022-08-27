@@ -45,7 +45,7 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
-    private String contactsToString(){
+    private String contactsToString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, String> entry :
                 contacts.entrySet()) {
@@ -57,7 +57,7 @@ public class Resume implements Comparable<Resume> {
         return stringBuilder.toString();
     }
 
-    private String organizationsToString(){
+    private String organizationsToString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<SectionType, Section> entry :
                 sections.entrySet()) {

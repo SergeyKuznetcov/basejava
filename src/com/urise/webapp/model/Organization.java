@@ -40,7 +40,7 @@ public class Organization {
         this.link = link;
     }
 
-    private String periodsToString(){
+    private String periodsToString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Period period :
                 periods) {
@@ -51,7 +51,7 @@ public class Organization {
 
     @Override
     public String toString() {
-        return name + "\n" + link + "\n"+ periodsToString();
+        return name + "\n" + link + "\n" + periodsToString();
     }
 
     @Override

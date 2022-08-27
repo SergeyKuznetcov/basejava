@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section{
+public class ListSection extends Section {
     private final List<String> descriptions = new ArrayList<>();
 
-    public void add(String description){
+    public void add(String description) {
         descriptions.add(description);
     }
 
@@ -15,7 +15,7 @@ public class ListSection extends Section{
         return descriptions;
     }
 
-    private String descriptionsToString(){
+    private String descriptionsToString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (String str :
                 descriptions) {

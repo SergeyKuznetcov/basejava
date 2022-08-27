@@ -16,7 +16,7 @@ public class StorageException extends RuntimeException {
         this.uuid = uuid;
     }
 
-    public StorageException(String message){
+    public StorageException(String message) {
         super(message);
         this.uuid = UUID.randomUUID().toString();
     }

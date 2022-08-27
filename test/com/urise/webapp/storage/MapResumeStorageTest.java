@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import org.junit.jupiter.api.Assertions;
 
-class MapResumeStorageTest extends AbstractMapStorageTest{
+class MapResumeStorageTest extends AbstractMapStorageTest {
     MapResumeStorageTest() {
         super(new MapResumeStorage());
     }

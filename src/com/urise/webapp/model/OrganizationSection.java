@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection extends Section{
+public class OrganizationSection extends Section {
     private final List<Organization> organizations = new ArrayList<>();
 
-    public Organization get(String name){
+    public Organization get(String name) {
         for (Organization o :
                 organizations) {
-            if (o.getName().equals(name)){
+            if (o.getName().equals(name)) {
                 return o;
             }
         }
@@ -21,7 +21,7 @@ public class OrganizationSection extends Section{
         return organizations;
     }
 
-    private String organizationsToString(){
+    private String organizationsToString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Organization organization :
                 organizations) {

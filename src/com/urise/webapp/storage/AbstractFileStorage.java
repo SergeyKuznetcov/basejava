@@ -11,23 +11,25 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private final File directory;
+
     public AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
-        if (directory.isDirectory()){
+        if (directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
         }
-        if (directory.canRead() || directory.canWrite()){
+        if (directory.canRead() || directory.canWrite()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
     }
 
     protected abstract Resume readFile(File file) throws IOException;
+
     protected abstract void writeFile(Resume resume, File file) throws IOException;
 
-    private File[] getListFiles(File directory){
+    private File[] getListFiles(File directory) {
         File[] result = directory.listFiles();
-        if (result == null){
+        if (result == null) {
             throw new StorageException("Storage is empty");
         }
         return result;
@@ -43,7 +45,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             return readFile(file);
         } catch (IOException e) {
-            throw new StorageException("IO error ", file.getName(),e);
+            throw new StorageException("IO error ", file.getName(), e);
         }
     }
 
@@ -72,20 +74,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
         for (File file :
                 getListFiles(directory)) {
-            try {
-                resumes.add(readFile(file));
-            } catch (IOException e) {
-                throw new StorageException("IO error ", file.getName(), e);
-            }
+            resumes.add(getResume(file));
         }
         return resumes;
     }
 
     @Override
     protected void deleteResume(File file) {
-        if (!file.delete()){
+        if (!file.delete()) {
             throw new StorageException(file.getName() + " was not deleted", file.getName());
-        };
+        }
+        ;
     }
 
     @Override
@@ -102,9 +101,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public void clear() {
         for (File file :
                 getListFiles(directory)) {
-            if (!file.delete()){
+            if (!file.delete()) {
                 throw new StorageException(file.getName() + " was not deleted", file.getName());
-            };
+            }
+            ;
         }
     }
 }

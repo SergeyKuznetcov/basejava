@@ -54,10 +54,10 @@ public class ResumeTestData {
         resume.getSections().put(SectionType.EDUCATION, education);
         resume.getSections().put(SectionType.EXPERIENCE, experience);
 
-        System.out.println(getResume("uuid1","fullName1"));
+        System.out.println(getResume("uuid1", "fullName1"));
     }
 
-    public static Resume getResume(String uuid, String fullName){
+    public static Resume getResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         TextSection personal = new TextSection("personalText1");
         TextSection objective = new TextSection("objectiveText1");
@@ -73,7 +73,7 @@ public class ResumeTestData {
         organization1.getPeriods().add(new Period("date1.1", "date1.2", "title1"));
         organization2.getPeriods().add(new Period("date2.1", "date2.2", "title2.1"));
         organization2.getPeriods().add(new Period("date2.3", "date2.4", "title2.2"));
-        organization3.getPeriods().add(new Period("date3.1","date3.2","title3"));
+        organization3.getPeriods().add(new Period("date3.1", "date3.2", "title3"));
         education.getOrganizations().add(organization1);
         education.getOrganizations().add(organization2);
         experience.getOrganizations().add(organization3);

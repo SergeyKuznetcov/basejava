@@ -8,13 +8,13 @@ public class MainFile {
         printFileList(file);
     }
 
-    public static void printFileList(File directory){
+    public static void printFileList(File directory) {
         System.out.println(directory.getName() + " {");
         for (File file :
                 directory.listFiles()) {
-            if (file.isDirectory()){
+            if (file.isDirectory()) {
                 printFileList(file);
-            }else {
+            } else {
                 System.out.println(file.getName());
             }
         }
