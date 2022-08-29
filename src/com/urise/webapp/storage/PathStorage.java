@@ -58,6 +58,11 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void saveResume(Resume resume, Path searchKey) {
+        try {
+            Files.createFile(searchKey);
+        } catch (IOException e) {
+            throw new StorageException(resume.getUuid() + " Path saving error", resume.getUuid(), e);
+        }
         updateResume(searchKey,resume);
     }
 
