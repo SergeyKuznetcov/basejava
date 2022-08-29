@@ -1,8 +1,9 @@
 package com.urise.webapp.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Period {
+public class Period implements Serializable {
     private String dateFrom;
     private String dateTo;
     private String title;

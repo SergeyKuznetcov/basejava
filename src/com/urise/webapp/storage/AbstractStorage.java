@@ -46,13 +46,13 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void update(String uuid, Resume r) {
-        LOGGER.info("Update " + r);
+        LOGGER.info("Update " + r.getUuid());
         updateResume(getExistingSearchKey(uuid), r);
     }
 
     @Override
     public void save(Resume r) {
-        LOGGER.info("Save " + r);
+        LOGGER.info("Save " + r.getUuid());
         saveResume(r, getNotExistingSearchKey(r.getUuid()));
     }
 

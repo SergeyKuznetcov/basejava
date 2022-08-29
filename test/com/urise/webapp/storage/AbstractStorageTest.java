@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 abstract class AbstractStorageTest {
+    protected static final File STORAGE_DIR = new File("C:\\javaProjects\\basejava\\storage");
     protected final Storage storage;
     protected static final String UUID_1 = "uuid1";
     protected static final String UUID_2 = "uuid3";
@@ -37,11 +39,12 @@ abstract class AbstractStorageTest {
     }
 
     protected void assertGet(Resume resume) {
-        Assertions.assertSame(resume, storage.get(resume.getUuid()));
+        Assertions.assertTrue(resume.equals(storage.get(resume.getUuid())));
     }
 
     @BeforeEach
     void setUp() {
+        storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
