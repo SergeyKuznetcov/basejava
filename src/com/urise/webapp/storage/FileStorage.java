@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.strategy.SerializationStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             return serializationStrategy.readFile(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error ", file.getName(), e);
+            throw new StorageException(file.getName() + " file getting error", file.getName(), e);
         }
     }
 
@@ -51,7 +52,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             serializationStrategy.writeFile(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error ", file.getName(), e);
+            throw new StorageException(file.getName() + " file updating error ", file.getName(), e);
         }
     }
 
@@ -59,16 +60,15 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume resume, File file) {
         try {
             file.createNewFile();
-            serializationStrategy.writeFile(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error ", file.getName(), e);
+            throw new StorageException(file.getName() + " file saving error ", file.getName(), e);
         }
+        updateResume(file, resume);
     }
 
     @Override
     protected List<Resume> getAllResumes() {
         List<Resume> resumes = new ArrayList<>();
-
         for (File file :
                 getListFiles(directory)) {
             resumes.add(getResume(file));

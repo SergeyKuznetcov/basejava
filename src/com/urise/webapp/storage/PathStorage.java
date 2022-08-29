@@ -2,15 +2,18 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.strategy.SerializationStrategy;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
@@ -27,20 +30,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
+        getFileList().forEach(this::deleteResume);
     }
 
     @Override
     protected int getSize() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Path getSize error", null, e);
-        }
+        return (int) getFileList().count();
     }
 
     @Override
@@ -63,21 +58,13 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void saveResume(Resume resume, Path searchKey) {
-        try {
-            serializationStrategy.writeFile(resume, new BufferedOutputStream(Files.newOutputStream(searchKey)));
-        } catch (IOException e) {
-            throw new StorageException(getFileName(searchKey) + " Path writing error", getFileName(searchKey), e);
-        }
+        updateResume(searchKey,resume);
     }
 
     @Override
     protected List<Resume> getAllResumes() {
         List<Resume> resumes = new ArrayList<>();
-        try {
-            Files.list(directory).forEach((r)-> resumes.add(getResume(r)));
-        } catch (IOException e) {
-            throw new StorageException("Something happened in Path getAllResumes method", null);
-        }
+        getFileList().forEach((r)-> resumes.add(getResume(r)));
         return resumes;
     }
 
@@ -102,5 +89,13 @@ public class PathStorage extends AbstractStorage<Path> {
 
     private String getFileName(Path path) {
         return path.getFileName().toString();
+    }
+
+    private Stream<Path> getFileList(){
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Path getting fileList error", null, e);
+        }
     }
 }

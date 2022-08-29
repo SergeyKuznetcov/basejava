@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.storage.strategy.ObjectStreamSerialization;
 import org.junit.jupiter.api.Assertions;
 
 class ObjectStreamPathStorageTest extends AbstractStorageTest{
