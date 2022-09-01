@@ -1,5 +1,8 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,15 +12,22 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     // Unique identifier
-    private final String uuid;
-    private final String fullName;
-    private final Map<String, String> contacts = new HashMap<>();
-    private final Map<SectionType, Section> sections = new HashMap<>();
+    private String uuid;
+    private String fullName;
+    private Map<String, String> contacts = new HashMap<>();
+    private Map<SectionType, Section> sections = new HashMap<>();
 
     // Constructors
     //-----------------------------------------
+
+
+    public Resume() {
+    }
+
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
@@ -29,6 +39,10 @@ public class Resume implements Comparable<Resume>, Serializable {
     /*-----------------------------------------------------
     Methods
      ------------------------------------------------------*/
+
+    public void addContact(String contactType, String info){
+        contacts.put(contactType,info);
+    }
 
     public Map<String, String> getContacts() {
         return contacts;

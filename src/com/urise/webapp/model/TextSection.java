@@ -5,6 +5,9 @@ import java.util.Objects;
 public class TextSection extends Section {
     private String description;
 
+    public TextSection() {
+    }
+
     public TextSection(String description) {
         this.description = description;
     }

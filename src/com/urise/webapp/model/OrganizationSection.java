@@ -7,6 +7,9 @@ import java.util.Objects;
 public class OrganizationSection extends Section {
     private final List<Organization> organizations = new ArrayList<>();
 
+    public OrganizationSection() {
+    }
+
     public Organization get(String name) {
         for (Organization o :
                 organizations) {
