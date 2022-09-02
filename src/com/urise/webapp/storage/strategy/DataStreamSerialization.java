@@ -20,28 +20,24 @@ public class DataStreamSerialization implements SerializationStrategy {
             resume.getContacts().putAll(fillMap(readCollection(dataInputStream, () -> Map.entry(dataInputStream.readUTF(), dataInputStream.readUTF()))));
             resume.getSections().putAll(fillMap(readCollection(dataInputStream, () -> {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
-                return Map.entry(sectionType, ((ElementReader<Section>) () -> {
-                    Section section = null;
-                    switch (sectionType) {
-                        case PERSONAL, OBJECTIVE -> section = new TextSection(dataInputStream.readUTF());
-                        case ACHIEVEMENT, QUALIFICATION -> {
-                            section = new ListSection();
-                            ((ListSection) section).getDescriptions().addAll(readCollection(dataInputStream, () -> dataInputStream.readUTF()));
-                        }
-                        case EDUCATION, EXPERIENCE -> {
-                            section = new OrganizationSection();
-                            ((OrganizationSection) section).getOrganizations().addAll(readCollection(dataInputStream, () -> {
-                                Organization organization = new Organization(dataInputStream.readUTF(), dataInputStream.readUTF());
-                                organization.getPeriods().addAll(readCollection(dataInputStream, () -> {
-                                    Period period = new Period(LocalDate.parse(dataInputStream.readUTF()), LocalDate.parse(dataInputStream.readUTF()), dataInputStream.readUTF(), dataInputStream.readUTF());
-                                    return period;
-                                }));
-                                return organization;
-                            }));
-                        }
+                Section section = null;
+                switch (sectionType) {
+                    case PERSONAL, OBJECTIVE -> section = new TextSection(dataInputStream.readUTF());
+                    case ACHIEVEMENT, QUALIFICATION -> {
+                        section = new ListSection();
+                        ((ListSection) section).getDescriptions().addAll(readCollection(dataInputStream, dataInputStream::readUTF));
                     }
-                    return section;
-                }).read());
+                    case EDUCATION, EXPERIENCE -> {
+                        section = new OrganizationSection();
+                        ((OrganizationSection) section).getOrganizations().addAll(readCollection(dataInputStream, () -> {
+                            Organization organization = new Organization(dataInputStream.readUTF(), dataInputStream.readUTF());
+                            organization.getPeriods().addAll(readCollection(dataInputStream, () ->
+                                    new Period(LocalDate.parse(dataInputStream.readUTF()), LocalDate.parse(dataInputStream.readUTF()), dataInputStream.readUTF(), dataInputStream.readUTF())));
+                            return organization;
+                        }));
+                    }
+                }
+                return Map.entry(sectionType, section);
             })));
             return resume;
         }
