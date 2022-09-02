@@ -63,13 +63,13 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException(resume.getUuid() + " Path saving error", resume.getUuid(), e);
         }
-        updateResume(searchKey,resume);
+        updateResume(searchKey, resume);
     }
 
     @Override
     protected List<Resume> getAllResumes() {
         List<Resume> resumes = new ArrayList<>();
-        getFileList().forEach((r)-> resumes.add(getResume(r)));
+        getFileList().forEach((r) -> resumes.add(getResume(r)));
         return resumes;
     }
 
@@ -96,7 +96,7 @@ public class PathStorage extends AbstractStorage<Path> {
         return path.getFileName().toString();
     }
 
-    private Stream<Path> getFileList(){
+    private Stream<Path> getFileList() {
         try {
             return Files.list(directory);
         } catch (IOException e) {

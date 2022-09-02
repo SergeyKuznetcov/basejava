@@ -40,8 +40,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     Methods
      ------------------------------------------------------*/
 
-    public void addContact(String contactType, String info){
-        contacts.put(contactType,info);
+    public void addContact(String contactType, String info) {
+        contacts.put(contactType, info);
     }
 
     public Map<String, String> getContacts() {

@@ -8,5 +8,6 @@ import java.io.OutputStream;
 
 public interface SerializationStrategy {
     Resume readFile(InputStream inputStream) throws IOException;
+
     void writeFile(Resume resume, OutputStream outputStream) throws IOException;
 }

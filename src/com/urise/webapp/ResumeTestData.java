@@ -21,12 +21,12 @@ public class ResumeTestData {
         Organization organization4 = new Organization("RIT Center");
         Organization organization5 = new Organization("Wrike", "https://www.wrike.com/");
 
-        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(3),1), LocalDate.of(2013, Month.of(5),1), "'Functional Programming Principles in Scala' by Martin Odersky"));
-        organization2.getPeriods().add(new Period(LocalDate.of(1993, Month.of(9),1), LocalDate.of(1996, Month.of(7),1), "Аспирантура (программист С, С++)"));
-        organization2.getPeriods().add(new Period(LocalDate.of(1987, Month.of(9),1), LocalDate.of(1993, Month.of(7),1), "Инженер (программист Fortran, C)"));
-        organization3.getPeriods().add(new Period(LocalDate.of(2008, Month.of(6),1), LocalDate.of(2010, Month.of(11),1), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'"));
-        organization4.getPeriods().add(new Period(LocalDate.of(2012, Month.of(4),1), LocalDate.of(2014, Month.of(10),1), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"));
-        organization5.getPeriods().add(new Period(LocalDate.of(2014, Month.of(10),1), LocalDate.of(2016, Month.of(1),1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
+        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(3), 1), LocalDate.of(2013, Month.of(5), 1), "'Functional Programming Principles in Scala' by Martin Odersky"));
+        organization2.getPeriods().add(new Period(LocalDate.of(1993, Month.of(9), 1), LocalDate.of(1996, Month.of(7), 1), "Аспирантура (программист С, С++)"));
+        organization2.getPeriods().add(new Period(LocalDate.of(1987, Month.of(9), 1), LocalDate.of(1993, Month.of(7), 1), "Инженер (программист Fortran, C)"));
+        organization3.getPeriods().add(new Period(LocalDate.of(2008, Month.of(6), 1), LocalDate.of(2010, Month.of(11), 1), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'"));
+        organization4.getPeriods().add(new Period(LocalDate.of(2012, Month.of(4), 1), LocalDate.of(2014, Month.of(10), 1), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"));
+        organization5.getPeriods().add(new Period(LocalDate.of(2014, Month.of(10), 1), LocalDate.of(2016, Month.of(1), 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
 
         education.getOrganizations().add(organization1);
         education.getOrganizations().add(organization2);
@@ -73,10 +73,10 @@ public class ResumeTestData {
         Organization organization2 = new Organization("Organization2", "link2");
         Organization organization3 = new Organization("Organization3", "link3");
 
-        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(1),1), LocalDate.of(2014, Month.of(3),1), "title1"));
-        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(3),1), LocalDate.of(2014, Month.of(6),1), "title2.1"));
-        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(6),1), LocalDate.of(2015, Month.of(2),1), "title2.2"));
-        organization3.getPeriods().add(new Period(LocalDate.of(2015, Month.of(2),1), LocalDate.of(2018, Month.of(1),1), "title3"));
+        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(1), 1), LocalDate.of(2014, Month.of(3), 1), "title1"));
+        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(3), 1), LocalDate.of(2014, Month.of(6), 1), "title2.1"));
+        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(6), 1), LocalDate.of(2015, Month.of(2), 1), "title2.2"));
+        organization3.getPeriods().add(new Period(LocalDate.of(2015, Month.of(2), 1), LocalDate.of(2018, Month.of(1), 1), "title3"));
         education.getOrganizations().add(organization1);
         education.getOrganizations().add(organization2);
         experience.getOrganizations().add(organization3);

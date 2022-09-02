@@ -15,17 +15,16 @@ public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
     static final AbstractArrayStorage sortedArrayStorage = new SortedArrayStorage();
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Resume resume = ResumeTestData.getResume("uuid", "fullName");
         SerializationStrategy serializationStrategy = new DataStreamSerialization();
         Path path = Paths.get("C:\\JavaProjects\\basejava\\storage");
-        Storage storage = new PathStorage(path.toString(),serializationStrategy);
+        Storage storage = new PathStorage(path.toString(), serializationStrategy);
         storage.clear();
         storage.save(resume);
 
         System.out.println(storage.get("uuid"));
         //System.out.println(resume);
-
 
 
         //Method method = resume.getClass().getDeclaredMethod("toString");

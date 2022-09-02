@@ -20,7 +20,7 @@ public class XmlParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
         } catch (JAXBException e) {
-           throw  new IllegalStateException(e);
+            throw new IllegalStateException(e);
         }
     }
 
