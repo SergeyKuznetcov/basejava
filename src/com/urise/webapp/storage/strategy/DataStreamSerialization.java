@@ -6,7 +6,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataStreamSerialization implements SerializationStrategy {
 
@@ -16,37 +17,36 @@ public class DataStreamSerialization implements SerializationStrategy {
             String uuid = dataInputStream.readUTF();
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dataInputStream.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(dataInputStream.readUTF(), dataInputStream.readUTF());
-            }
-            size = dataInputStream.readInt();
-            for (int i = 0; i < size; i++) {
+            resume.getContacts().putAll(fillMap(readCollection(dataInputStream, () -> Map.entry(dataInputStream.readUTF(), dataInputStream.readUTF()))));
+            resume.getSections().putAll(fillMap(readCollection(dataInputStream, () -> {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
-                switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> resume.getSections().put(sectionType, new TextSection(dataInputStream.readUTF()));
-                    case ACHIEVEMENT, QUALIFICATION -> {
-                        ListSection section = new ListSection();
-                        section.getDescriptions().addAll(readList(dataInputStream, () -> dataInputStream.readUTF()));
-                        resume.getSections().put(sectionType, section);
-                    }
-                    case EDUCATION, EXPERIENCE -> {
-                        OrganizationSection section = new OrganizationSection();
-                        resume.getSections().put(sectionType, section);
-                        section.getOrganizations().addAll(readList(dataInputStream, () -> {
-                            Organization organization = new Organization(dataInputStream.readUTF(), dataInputStream.readUTF());
-                            organization.getPeriods().addAll(readList(dataInputStream, () -> {
-                                Period period = new Period(LocalDate.parse(dataInputStream.readUTF()), LocalDate.parse(dataInputStream.readUTF()), dataInputStream.readUTF(), dataInputStream.readUTF());
-                                return period;
+                return Map.entry(sectionType, ((ElementReader<Section>) () -> {
+                    Section section = null;
+                    switch (sectionType) {
+                        case PERSONAL, OBJECTIVE -> section = new TextSection(dataInputStream.readUTF());
+                        case ACHIEVEMENT, QUALIFICATION -> {
+                            section = new ListSection();
+                            ((ListSection) section).getDescriptions().addAll(readCollection(dataInputStream, () -> dataInputStream.readUTF()));
+                        }
+                        case EDUCATION, EXPERIENCE -> {
+                            section = new OrganizationSection();
+                            ((OrganizationSection) section).getOrganizations().addAll(readCollection(dataInputStream, () -> {
+                                Organization organization = new Organization(dataInputStream.readUTF(), dataInputStream.readUTF());
+                                organization.getPeriods().addAll(readCollection(dataInputStream, () -> {
+                                    Period period = new Period(LocalDate.parse(dataInputStream.readUTF()), LocalDate.parse(dataInputStream.readUTF()), dataInputStream.readUTF(), dataInputStream.readUTF());
+                                    return period;
+                                }));
+                                return organization;
                             }));
-                            return organization;
-                        }));
+                        }
                     }
-                }
-            }
+                    return section;
+                }).read());
+            })));
             return resume;
         }
     }
+
 
     @Override
     public void writeFile(Resume resume, OutputStream outputStream) throws IOException {
@@ -77,24 +77,37 @@ public class DataStreamSerialization implements SerializationStrategy {
         }
     }
 
+    private <K, V> Map<K, V> fillMap(Collection<Map.Entry<K, V>> collection) {
+        Map<K, V> map = new HashMap<>();
+        for (Map.Entry<K, V> entry :
+                collection) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return map;
+    }
+
     private interface ElementReader<T> {
         T read() throws IOException;
     }
 
+
     private interface ElementWriter<T> {
         void write(T t) throws IOException;
+
     }
 
-    private <T> List<T> readList(DataInputStream dataInputStream, ElementReader<T> elementReader) throws IOException {
+    private <T> Collection<T> readCollection(DataInputStream dataInputStream, ElementReader<T> elementReader) throws
+            IOException {
         int size = dataInputStream.readInt();
-        List<T> list = new ArrayList<>();
+        Collection<T> collection = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            list.add(elementReader.read());
+            collection.add(elementReader.read());
         }
-        return list;
+        return collection;
     }
 
-    private <T> void writeCollection(Collection<T> collection, DataOutputStream dataOutputStream, ElementWriter<T> elementWriter) throws IOException {
+    private <T> void writeCollection(Collection<T> collection, DataOutputStream
+            dataOutputStream, ElementWriter<T> elementWriter) throws IOException {
         dataOutputStream.writeInt(collection.size());
         for (T element :
                 collection) {

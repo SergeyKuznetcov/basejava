@@ -1,5 +1,7 @@
 package com.urise.webapp;
 
+import com.urise.webapp.model.Resume;
+
 import java.io.IOException;
 
 /**
@@ -8,6 +10,7 @@ import java.io.IOException;
  */
 public class MainArray {
     public static void main(String[] args) throws IOException {
+        Resume resume = ResumeTestData.getResume("1","1");
 
     }
 }
