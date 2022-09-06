@@ -3,7 +3,6 @@ package com.urise.webapp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MainStreamAPI {
@@ -18,12 +17,7 @@ public class MainStreamAPI {
     }
 
     private static int minValue(int[] values) {
-        int[] temp = Arrays.stream(values).distinct().sorted().toArray();
-        AtomicInteger integer = new AtomicInteger((int) Math.pow(10, temp.length));
-        return Arrays.stream(temp).map((val) -> {
-            integer.set(integer.get() / 10);
-            return val * integer.get();
-        }).sum();
+        return Arrays.stream(values).distinct().sorted().reduce((o1, o2) -> o1 * 10 + o2).getAsInt();
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
