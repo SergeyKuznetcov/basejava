@@ -1,6 +1,5 @@
 package com.urise.webapp.exception;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class StorageException extends RuntimeException {

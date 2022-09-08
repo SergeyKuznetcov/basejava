@@ -3,12 +3,10 @@ package com.urise.webapp.storage;
 import com.urise.webapp.storage.strategy.ObjectStreamSerialization;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.File;
-
 class ObjectStreamFileStorageTest extends AbstractStorageTest{
 
     ObjectStreamFileStorageTest() {
-        super(new FileStorage(new File("C:\\javaProjects\\basejava\\storage"), new ObjectStreamSerialization()));
+        super(new FileStorage(STORAGE_DIR, new ObjectStreamSerialization()));
     }
 
     @Override

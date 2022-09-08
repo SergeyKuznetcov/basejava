@@ -62,42 +62,42 @@ public class ResumeTestData {
 
     public static Resume getResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-        TextSection personal = new TextSection("personalText1");
-        TextSection objective = new TextSection("objectiveText1");
-        ListSection achievement = new ListSection();
-        ListSection qualification = new ListSection();
-        OrganizationSection education = new OrganizationSection();
-        OrganizationSection experience = new OrganizationSection();
-
-        Organization organization1 = new Organization("Organization1", "link1");
-        Organization organization2 = new Organization("Organization2", "link2");
-        Organization organization3 = new Organization("Organization3", "link3");
-
-        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(1), 1), LocalDate.of(2014, Month.of(3), 1), "title1"));
-        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(3), 1), LocalDate.of(2014, Month.of(6), 1), "title2.1"));
-        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(6), 1), LocalDate.of(2015, Month.of(2), 1), "title2.2"));
-        organization3.getPeriods().add(new Period(LocalDate.of(2015, Month.of(2), 1), LocalDate.of(2018, Month.of(1), 1), "title3"));
-        education.getOrganizations().add(organization1);
-        education.getOrganizations().add(organization2);
-        experience.getOrganizations().add(organization3);
-
-        achievement.getDescriptions().add("achievement1");
-        achievement.getDescriptions().add("achievement2");
-        achievement.getDescriptions().add("achievement3");
-
-        qualification.getDescriptions().add("qualification1");
-        qualification.getDescriptions().add("qualification2");
-        qualification.getDescriptions().add("qualification3");
-
-        resume.getContacts().put("Тел.", "+7(921) 855-0482");
-        resume.getContacts().put("Skype", "skype:grigory.kislin");
-
-        resume.getSections().put(SectionType.OBJECTIVE, objective);
-        resume.getSections().put(SectionType.PERSONAL, personal);
-        resume.getSections().put(SectionType.ACHIEVEMENT, achievement);
-        resume.getSections().put(SectionType.QUALIFICATION, qualification);
-        resume.getSections().put(SectionType.EDUCATION, education);
-        resume.getSections().put(SectionType.EXPERIENCE, experience);
+//        TextSection personal = new TextSection("personalText1");
+//        TextSection objective = new TextSection("objectiveText1");
+//        ListSection achievement = new ListSection();
+//        ListSection qualification = new ListSection();
+//        OrganizationSection education = new OrganizationSection();
+//        OrganizationSection experience = new OrganizationSection();
+//
+//        Organization organization1 = new Organization("Organization1", "link1");
+//        Organization organization2 = new Organization("Organization2", "link2");
+//        Organization organization3 = new Organization("Organization3", "link3");
+//
+//        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(1), 1), LocalDate.of(2014, Month.of(3), 1), "title1"));
+//        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(3), 1), LocalDate.of(2014, Month.of(6), 1), "title2.1"));
+//        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(6), 1), LocalDate.of(2015, Month.of(2), 1), "title2.2"));
+//        organization3.getPeriods().add(new Period(LocalDate.of(2015, Month.of(2), 1), LocalDate.of(2018, Month.of(1), 1), "title3"));
+//        education.getOrganizations().add(organization1);
+//        education.getOrganizations().add(organization2);
+//        experience.getOrganizations().add(organization3);
+//
+//        achievement.getDescriptions().add("achievement1");
+//        achievement.getDescriptions().add("achievement2");
+//        achievement.getDescriptions().add("achievement3");
+//
+//        qualification.getDescriptions().add("qualification1");
+//        qualification.getDescriptions().add("qualification2");
+//        qualification.getDescriptions().add("qualification3");
+//
+//        resume.getContacts().put("Тел.", "+7(921) 855-0482");
+//        resume.getContacts().put("Skype", "skype:grigory.kislin");
+//
+//        resume.getSections().put(SectionType.OBJECTIVE, objective);
+//        resume.getSections().put(SectionType.PERSONAL, personal);
+//        resume.getSections().put(SectionType.ACHIEVEMENT, achievement);
+//        resume.getSections().put(SectionType.QUALIFICATION, qualification);
+//        resume.getSections().put(SectionType.EDUCATION, education);
+//        resume.getSections().put(SectionType.EXPERIENCE, experience);
         return resume;
     }
 }
