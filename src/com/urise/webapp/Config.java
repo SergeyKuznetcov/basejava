@@ -33,7 +33,7 @@ public class Config {
         try (InputStream inputStream = new FileInputStream(PROPS)) {
             props.load(inputStream);
             storageDir = new File(props.getProperty("storage.dir"));
-            storage = new SqlStorage(props.getProperty("db.url"),props.getProperty("db.user"),props.getProperty("db.password"));
+            storage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password"));
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config " + PROPS.getAbsolutePath());
         }

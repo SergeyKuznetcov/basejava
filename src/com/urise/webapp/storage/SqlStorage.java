@@ -1,13 +1,11 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +38,7 @@ public class SqlStorage implements Storage {
         sqlHelper.executeSql("INSERT INTO resume (uuid, full_name) VALUES (?,?)", preparedStatement -> {
             preparedStatement.setString(1, r.getUuid());
             preparedStatement.setString(2, r.getFullName());
-            try {
-                preparedStatement.execute();
-            }catch (SQLException e){
-                if (e.getSQLState().equals("23505"));{
-                    throw new ExistStorageException(r.getUuid());
-                }
-            }
+            preparedStatement.execute();
             return null;
         });
     }
