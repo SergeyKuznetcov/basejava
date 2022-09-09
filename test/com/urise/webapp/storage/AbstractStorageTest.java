@@ -65,9 +65,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void saveExisting() {
-        Assertions.assertThrows(ExistStorageException.class, () -> {
-            storage.save(RESUME_2);
-        });
+        Assertions.assertThrows(ExistStorageException.class, () -> storage.save(RESUME_2));
     }
 
     @Test
@@ -87,25 +85,19 @@ abstract class AbstractStorageTest {
 
     @Test
     void getNotExisting() {
-        Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.get(UUID_NOT_EXIST);
-        });
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_NOT_EXIST));
     }
 
     @Test
     void delete() {
         storage.delete(UUID_2);
         assertSize(2);
-        Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.get(UUID_2);
-        });
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_2));
     }
 
     @Test
     void deleteNotExisting() {
-        Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.delete(UUID_NOT_EXIST);
-        });
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_NOT_EXIST));
     }
 
     @Test

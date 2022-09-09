@@ -16,7 +16,7 @@ public class SqlHelper {
 
     public <T> T executeSql(String sql, SqlExecutor<T> sqlExecutor){
         try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             return sqlExecutor.execute(preparedStatement);
         } catch (SQLException e) {
             throw new StorageException(e.getMessage());
