@@ -18,6 +18,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     // Unique identifier
     private String uuid;
     private String fullName;
+
     private Map<String, String> contacts = new HashMap<>();
     private Map<SectionType, Section> sections = new HashMap<>();
 
@@ -46,6 +47,10 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public Map<String, String> getContacts() {
         return contacts;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public Map<SectionType, Section> getSections() {

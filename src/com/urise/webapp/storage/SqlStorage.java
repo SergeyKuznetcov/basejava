@@ -4,10 +4,10 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.SqlHelper;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
@@ -18,40 +18,55 @@ public class SqlStorage implements Storage {
 
     @Override
     public void clear() {
-        sqlHelper.executeSql("DELETE FROM resume", (preparedStatement) -> preparedStatement.execute());
+        sqlHelper.executeSql("DELETE FROM resume", PreparedStatement::execute);
     }
 
     @Override
     public void update(String uuid, Resume r) {
-        sqlHelper.executeSql("UPDATE resume SET full_name=? WHERE uuid=?", preparedStatement -> {
-            preparedStatement.setString(1, r.getFullName());
-            preparedStatement.setString(2, uuid);
-            if (preparedStatement.executeUpdate() == 0) {
-                throw new NotExistStorageException(uuid + " does not exist");
+        sqlHelper.transactionalExecute(connection -> {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE resume SET full_name=? WHERE uuid=?")){
+                setParameters(preparedStatement, r.getFullName(), uuid);
+                if (preparedStatement.executeUpdate()==0){
+                    throw new NotExistStorageException(uuid);
+                }
             }
+            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")){
+                preparedStatement.setString(1,uuid);
+                preparedStatement.execute();
+            }
+            insertAllContacts(connection,r,uuid);
             return null;
         });
     }
 
     @Override
     public void save(Resume r) {
-        sqlHelper.executeSql("INSERT INTO resume (uuid, full_name) VALUES (?,?)", preparedStatement -> {
-            preparedStatement.setString(1, r.getUuid());
-            preparedStatement.setString(2, r.getFullName());
-            preparedStatement.execute();
+        sqlHelper.transactionalExecute(connection -> {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
+                setParameters(preparedStatement, r.getUuid(), r.getFullName());
+                preparedStatement.execute();
+            }
+            insertAllContacts(connection, r, r.getUuid());
             return null;
         });
     }
 
     @Override
     public Resume get(String uuid) {
-        return sqlHelper.executeSql("SELECT full_name FROM resume WHERE uuid=?", preparedStatement -> {
+        return sqlHelper.executeSql("SELECT * FROM resume r " +
+                "  LEFT JOIN contact c " +
+                "    ON r.uuid=c.resume_uuid " +
+                " WHERE r.uuid=?", preparedStatement -> {
             preparedStatement.setString(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 throw new NotExistStorageException(uuid + " does not exist");
             }
-            return new Resume(uuid, resultSet.getString("full_name"));
+            Resume resume = new Resume(uuid, resultSet.getString("full_name"));
+            do {
+                resume.getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
+            } while (resultSet.next());
+            return resume;
         });
     }
 
@@ -68,11 +83,24 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.executeSql("SELECT * FROM resume ORDER BY full_name", preparedStatement -> {
-            List<Resume> resumes = new ArrayList<>();
+        return sqlHelper.executeSql("SELECT uuid,full_name, type, value FROM resume r " +
+                "  LEFT JOIN contact c " +
+                "    ON r.uuid=c.resume_uuid " +
+                " order by full_name, uuid", preparedStatement -> {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                resumes.add(new Resume(resultSet.getString("uuid"), resultSet.getString("full_name")));
+            List<Resume> resumes = new ArrayList<>();
+            if (resultSet.next()){
+                Resume resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
+                do {
+                    if (resume.getUuid().equals(resultSet.getString("uuid"))){
+                        resume.getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
+                    }else {
+                        resumes.add(resume);
+                        resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
+                        resume.getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
+                    }
+                }while (resultSet.next());
+                resumes.add(resume);
             }
             return resumes;
         });
@@ -87,5 +115,22 @@ public class SqlStorage implements Storage {
             }
             return 0;
         });
+    }
+
+    private void insertAllContacts(Connection connection, Resume resume, String uuid) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")){
+            for (Map.Entry<String ,String> entry:
+                 resume.getContacts().entrySet()) {
+                setParameters(preparedStatement, uuid, entry.getKey(),entry.getValue());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        }
+    }
+
+    private void setParameters(PreparedStatement preparedStatement, String ... parameters) throws SQLException {
+        for (int i = 0; i < parameters.length; i++) {
+            preparedStatement.setString(i+1,parameters[i]);
+        }
     }
 }

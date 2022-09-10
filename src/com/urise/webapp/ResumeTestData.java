@@ -88,10 +88,10 @@ public class ResumeTestData {
 //        qualification.getDescriptions().add("qualification1");
 //        qualification.getDescriptions().add("qualification2");
 //        qualification.getDescriptions().add("qualification3");
-//
-//        resume.getContacts().put("Тел.", "+7(921) 855-0482");
-//        resume.getContacts().put("Skype", "skype:grigory.kislin");
-//
+
+        resume.getContacts().put("Тел.", "+7(921) 855-0482");
+        resume.getContacts().put("Skype", "skype:grigory.kislin");
+
 //        resume.getSections().put(SectionType.OBJECTIVE, objective);
 //        resume.getSections().put(SectionType.PERSONAL, personal);
 //        resume.getSections().put(SectionType.ACHIEVEMENT, achievement);

@@ -19,10 +19,30 @@ public class SqlHelper {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             return sqlExecutor.execute(preparedStatement);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) {
-                throw new ExistStorageException();
+            throw convertException(e);
+        }
+    }
+
+    public  <T> T transactionalExecute(SqlTransaction<T> executor){
+        try (Connection connection= connectionFactory.getConnection()){
+            try {
+                connection.setAutoCommit(false);
+                T res = executor.execute(connection);
+                connection.commit();
+                return res;
+            }catch (SQLException e){
+                connection.rollback();
+                throw convertException(e);
             }
+        } catch (SQLException e) {
             throw new StorageException(e.getMessage());
         }
+    }
+
+    private StorageException convertException(SQLException e){
+        if (e.getSQLState().equals("23505")) {
+            return new ExistStorageException();
+        }
+        return new  StorageException(e.getMessage());
     }
 }
