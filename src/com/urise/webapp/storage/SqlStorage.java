@@ -108,7 +108,7 @@ public class SqlStorage implements Storage {
             setParameters(preparedStatement, parameters);
             if (checkNotExistException) {
                 if (preparedStatement.executeUpdate() == 0) {
-                    throw new NotExistStorageException("uuid does not exist");
+                    throw new NotExistStorageException("uuid");
                 }
             } else {
                 preparedStatement.execute();
@@ -119,7 +119,13 @@ public class SqlStorage implements Storage {
     private void insertContacts(Connection connection, Resume resume, String uuid) throws SQLException {
         for (Map.Entry<String, String> entry :
                 resume.getContacts().entrySet()) {
-            doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false, uuid, entry.getKey(), entry.getValue());
+            if (entry.getValue()!=null){
+                doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
+                        uuid, entry.getKey(), entry.getValue());
+            } else {
+                doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
+                        uuid, entry.getKey(), "null");
+            }
         }
     }
 
