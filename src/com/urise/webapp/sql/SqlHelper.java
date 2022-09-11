@@ -23,14 +23,14 @@ public class SqlHelper {
         }
     }
 
-    public  <T> T transactionalExecute(SqlTransaction<T> executor){
-        try (Connection connection= connectionFactory.getConnection()){
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection connection = connectionFactory.getConnection()) {
             try {
                 connection.setAutoCommit(false);
                 T res = executor.execute(connection);
                 connection.commit();
                 return res;
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 connection.rollback();
                 throw convertException(e);
             }
@@ -39,10 +39,10 @@ public class SqlHelper {
         }
     }
 
-    private StorageException convertException(SQLException e){
+    private StorageException convertException(SQLException e) {
         if (e.getSQLState().equals("23505")) {
             return new ExistStorageException();
         }
-        return new  StorageException(e.getMessage());
+        return new StorageException(e.getMessage());
     }
 }

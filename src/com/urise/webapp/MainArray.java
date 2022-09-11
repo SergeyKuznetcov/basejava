@@ -10,7 +10,7 @@ import com.urise.webapp.storage.Storage;
 public class MainArray {
     public static void main(String[] args) {
         Storage storage = Config.getInstance().getStorage();
-        Resume resume = new Resume("a97b3ac3-3817-4c3f-8a5f-178497311f1d","name1");
+        Resume resume = new Resume("a97b3ac3-3817-4c3f-8a5f-178497311f1d", "name1");
         storage.clear();
         System.out.println(resume);
         storage.save(resume);
