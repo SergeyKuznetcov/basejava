@@ -119,12 +119,12 @@ public class SqlStorage implements Storage {
     private void insertContacts(Connection connection, Resume resume, String uuid) throws SQLException {
         for (Map.Entry<String, String> entry :
                 resume.getContacts().entrySet()) {
-            if (entry.getValue()!=null){
-                doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
-                        uuid, entry.getKey(), entry.getValue());
-            } else {
+            if (entry.getValue()==null){
                 doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
                         uuid, entry.getKey(), "null");
+            } else {
+                doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
+                        uuid, entry.getKey(), entry.getValue());
             }
         }
     }
