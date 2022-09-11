@@ -78,11 +78,11 @@ public class SqlStorage implements Storage {
             if (resultSet.next()) {
                 Resume resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
                 do {
-                    if (resume.getUuid().equals(resultSet.getString("uuid"))) {
-                        resume.getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
-                    } else {
+                    if (!resume.getUuid().equals(resultSet.getString("uuid"))) {
                         resumes.add(resume);
                         resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
+                    }
+                    if ((resultSet.getString("type") != null) && (resultSet.getString("value") != null)) {
                         resume.getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
                     }
                 } while (resultSet.next());
@@ -119,13 +119,8 @@ public class SqlStorage implements Storage {
     private void insertContacts(Connection connection, Resume resume, String uuid) throws SQLException {
         for (Map.Entry<String, String> entry :
                 resume.getContacts().entrySet()) {
-            if (entry.getValue()==null){
-                doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
-                        uuid, entry.getKey(), "null");
-            } else {
-                doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
-                        uuid, entry.getKey(), entry.getValue());
-            }
+            doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
+                    uuid, entry.getKey(), entry.getValue());
         }
     }
 
