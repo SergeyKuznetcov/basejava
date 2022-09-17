@@ -1,11 +1,16 @@
 package com.urise.webapp.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends Section {
     private final List<String> descriptions = new ArrayList<>();
+
+    public ListSection(String...descriptions) {
+        this.descriptions.addAll(Arrays.asList(descriptions));
+    }
 
     public void add(String description) {
         descriptions.add(description);

@@ -20,7 +20,7 @@ abstract class AbstractStorageTest {
     protected static final String UUID_1 = "7de882da-02f2-4d16-8daa-60660aaf4071";
     protected static final String UUID_2 = "a97b3ac3-3817-4c3f-8a5f-178497311f1d";
     protected static final String UUID_3 = "dd0a70d1-5ed3-479a-b452-d5e04f21ca73";
-    protected static final String UUID_4 = "uuid6";
+    protected static final String UUID_4 = "780a70d1-5ed3-479a-b452-d5e04f21ca73";
     protected static final String FULL_NAME1 = "fullName1";
     protected static final String FULL_NAME2 = "fullName3";
     protected static final String FULL_NAME3 = "fullName5";
