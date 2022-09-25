@@ -42,12 +42,12 @@ public class ResumeTestData {
         achievement.getDescriptions().add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
         achievement.getDescriptions().add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
 
-        resume.getContacts().put("Тел.", "+7(921) 855-0482");
-        resume.getContacts().put("Skype", "skype:grigory.kislin");
-        resume.getContacts().put("Профиль LinkedIn", "https://www.linkedin.com/in/gkislin");
-        resume.getContacts().put("Профиль GitHub", "https://github.com/gkislin");
-        resume.getContacts().put("Профиль Stackoverflow", "https://stackoverflow.com/users/548473");
-        resume.getContacts().put("Домашняя страница", "http://gkislin.ru/");
+        resume.getContacts().put(ContactType.PHONE, "+7(921) 855-0482");
+        resume.getContacts().put(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.getContacts().put(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.getContacts().put(ContactType.GITHUB, "https://github.com/gkislin");
+        resume.getContacts().put(ContactType.STATCKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume.getContacts().put(ContactType.HOME_PAGE, "http://gkislin.ru/");
 
 
         resume.getSections().put(SectionType.OBJECTIVE, objective);
@@ -66,21 +66,21 @@ public class ResumeTestData {
         TextSection objective = new TextSection("objectiveText1");
         ListSection achievement = new ListSection();
         ListSection qualification = new ListSection();
-//        OrganizationSection education = new OrganizationSection();
-//        OrganizationSection experience = new OrganizationSection();
-//
-//        Organization organization1 = new Organization("Organization1", "link1");
-//        Organization organization2 = new Organization("Organization2", "link2");
-//        Organization organization3 = new Organization("Organization3", "link3");
-//
-//        organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(1), 1), LocalDate.of(2014, Month.of(3), 1), "title1"));
-//        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(3), 1), LocalDate.of(2014, Month.of(6), 1), "title2.1"));
-//        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(6), 1), LocalDate.of(2015, Month.of(2), 1), "title2.2"));
-//        organization3.getPeriods().add(new Period(LocalDate.of(2015, Month.of(2), 1), LocalDate.of(2018, Month.of(1), 1), "title3"));
-//        education.getOrganizations().add(organization1);
-//        education.getOrganizations().add(organization2);
-//        experience.getOrganizations().add(organization3);
-//
+        OrganizationSection education = new OrganizationSection();
+       OrganizationSection experience = new OrganizationSection();
+
+        Organization organization1 = new Organization("Organization1", "link1");
+        Organization organization2 = new Organization("Organization2", "link2");
+        Organization organization3 = new Organization("Organization3", "link3");
+
+       organization1.getPeriods().add(new Period(LocalDate.of(2013, Month.of(1), 1), LocalDate.of(2014, Month.of(3), 1), "title1"));
+        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(3), 1), LocalDate.of(2014, Month.of(6), 1), "title2.1"));
+        organization2.getPeriods().add(new Period(LocalDate.of(2014, Month.of(6), 1), LocalDate.of(2015, Month.of(2), 1), "title2.2"));
+        organization3.getPeriods().add(new Period(LocalDate.of(2015, Month.of(2), 1), LocalDate.of(2018, Month.of(1), 1), "title3", "description3"));
+        education.getOrganizations().add(organization1);
+        education.getOrganizations().add(organization2);
+        experience.getOrganizations().add(organization3);
+
         achievement.getDescriptions().add("achievement1");
         achievement.getDescriptions().add("achievement2");
         achievement.getDescriptions().add("achievement3");
@@ -89,15 +89,15 @@ public class ResumeTestData {
         qualification.getDescriptions().add("qualification2");
         qualification.getDescriptions().add("qualification3");
 
-        resume.getContacts().put("Тел.", "+7(921) 855-0482");
-        resume.getContacts().put("Skype", "skype:grigory.kislin");
+        resume.getContacts().put(ContactType.PHONE, "+7(921) 855-0482");
+        resume.getContacts().put(ContactType.SKYPE, "skype:grigory.kislin");
 
         resume.getSections().put(SectionType.OBJECTIVE, objective);
         resume.getSections().put(SectionType.PERSONAL, personal);
         resume.getSections().put(SectionType.ACHIEVEMENT, achievement);
         resume.getSections().put(SectionType.QUALIFICATION, qualification);
-//        resume.getSections().put(SectionType.EDUCATION, education);
-//        resume.getSections().put(SectionType.EXPERIENCE, experience);
+        resume.getSections().put(SectionType.EDUCATION, education);
+        resume.getSections().put(SectionType.EXPERIENCE, experience);
         return resume;
     }
 }

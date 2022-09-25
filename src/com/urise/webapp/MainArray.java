@@ -9,5 +9,7 @@ import com.urise.webapp.storage.Storage;
 public class MainArray {
     public static void main(String[] args) {
         Storage storage = Config.getInstance().getStorage();
+
+        System.out.println("".trim().length());
     }
 }

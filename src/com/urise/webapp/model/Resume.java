@@ -19,7 +19,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     private String uuid;
     private String fullName;
 
-    private Map<String, String> contacts = new HashMap<>();
+    private Map<ContactType, String> contacts = new HashMap<>();
     private Map<SectionType, Section> sections = new HashMap<>();
 
     // Constructors
@@ -41,11 +41,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     Methods
      ------------------------------------------------------*/
 
-    public void addContact(String contactType, String info) {
-        contacts.put(contactType, info);
-    }
-
-    public Map<String, String> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
@@ -67,7 +63,7 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     private String contactsToString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Map.Entry<String, String> entry :
+        for (Map.Entry<ContactType, String> entry :
                 contacts.entrySet()) {
             stringBuilder.append(entry.getKey());
             stringBuilder.append(": ");
@@ -109,5 +105,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(uuid, fullName, contacts, sections);
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

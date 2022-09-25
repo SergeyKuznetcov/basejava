@@ -8,6 +8,9 @@ import java.util.Objects;
 public class ListSection extends Section {
     private final List<String> descriptions = new ArrayList<>();
 
+    public ListSection() {
+    }
+
     public ListSection(String...descriptions) {
         this.descriptions.addAll(Arrays.asList(descriptions));
     }

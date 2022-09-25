@@ -1,46 +1,105 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
-    private final Storage storage = Config.getInstance().getStorage();
+    private Storage storage;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.getInstance().getStorage();
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF8");
         String uuid = request.getParameter("uuid");
-        if (uuid==null){
-            StringBuilder stringBuilder = new StringBuilder("<table>\n<tr>\n<th>uuid</th>\n<th>full_name</th>\n</tr>\n");
-            List<Resume> list = storage.getAllSorted();
-            for (Resume r :
-                    list) {
-                stringBuilder.append("<tr>\n<th>");
-                stringBuilder.append(r.getUuid());
-                stringBuilder.append("</th>\n<th>");
-                stringBuilder.append(r.getFullName());
-                stringBuilder.append("</th>\n</tr>\n");
-            }
-            stringBuilder.append("</table>");
-            response.getWriter().write(stringBuilder.toString());
-        }else {
-            response.getWriter().write(storage.get(uuid).toString());
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
         }
-
+        Resume resume;
+        switch (action) {
+            case "delete" -> {
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            }
+            case "view", "edit" -> resume = storage.get(uuid);
+            case "add" -> resume = new Resume("");
+            default -> throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp").forward(request, response);
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume resume;
+        boolean isExist = true;
+        try {
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        }catch (NotExistStorageException e){
+            resume = new Resume(uuid, fullName);
+            isExist = false;
+        }
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value == null || value.trim().length() == 0) {
+                resume.getContacts().remove(type);
+            } else {
+                resume.getContacts().put(type, value);
+            }
+        }
+        for (SectionType sectionType :
+                SectionType.values()) {
+            switch (sectionType){
+                case PERSONAL, OBJECTIVE -> {
+                    String value = request.getParameter(sectionType.name());
+                    if (value == null || value.trim().length() == 0) {
+                        resume.getSections().remove(sectionType);
+                    } else {
+                        resume.getSections().put(sectionType, new TextSection(value));
+                    }
+                }
+                case ACHIEVEMENT, QUALIFICATION -> {
+                    String value = request.getParameter(sectionType.name());
+                    if (value == null || value.trim().length() == 0) {
+                        resume.getSections().remove(sectionType);
+                    } else {
+                        ListSection section = new ListSection();
+                        String[] values = value.trim().split("\n");
+                        for (String s :
+                                values) {
+                            section.getDescriptions().add(s);
+                        }
+                        resume.getSections().put(sectionType, section);
+                    }
+                }
+            }
+        }
+        if (isExist){
+            storage.update(resume.getUuid(), resume);
+        }else {
+            storage.save(resume);
+        }
+        response.sendRedirect("resume");
     }
 }

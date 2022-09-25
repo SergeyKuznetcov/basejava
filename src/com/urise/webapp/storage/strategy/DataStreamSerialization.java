@@ -17,7 +17,7 @@ public class DataStreamSerialization implements SerializationStrategy {
             String uuid = dataInputStream.readUTF();
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            resume.getContacts().putAll(fillMap(readCollection(dataInputStream, () -> Map.entry(dataInputStream.readUTF(), dataInputStream.readUTF()))));
+            resume.getContacts().putAll(fillMap(readCollection(dataInputStream, () -> Map.entry(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()))));
             resume.getSections().putAll(fillMap(readCollection(dataInputStream, () -> {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 Section section = null;
@@ -50,7 +50,7 @@ public class DataStreamSerialization implements SerializationStrategy {
             dataOutputStream.writeUTF(resume.getUuid());
             dataOutputStream.writeUTF(resume.getFullName());
             writeCollection(resume.getContacts().entrySet(), dataOutputStream, entry -> {
-                dataOutputStream.writeUTF(entry.getKey());
+                dataOutputStream.writeUTF(entry.getKey().toString());
                 dataOutputStream.writeUTF(entry.getValue());
             });
             writeCollection(resume.getSections().entrySet(), dataOutputStream, entry -> {

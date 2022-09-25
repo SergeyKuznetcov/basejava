@@ -4,6 +4,7 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
+import com.urise.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -65,14 +66,15 @@ public class SqlStorage implements Storage {
                 setParameters(preparedStatement, uuid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    resume.getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
+                    resume.getContacts().put(ContactType.valueOf(resultSet.getString("type")), resultSet.getString("value"));
                 }
             }
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid=?")) {
                 setParameters(preparedStatement, uuid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    addSection(resultSet, resume);
+                    resume.getSections().put(SectionType.valueOf(resultSet.getString("type")),
+                            JsonParser.read(resultSet.getString("description"), Section.class));
                 }
             }
             return resume;
@@ -104,7 +106,7 @@ public class SqlStorage implements Storage {
                     while (!resumeList.get(i).getUuid().equals(resultSet.getString("resume_uuid")) && i < resumeList.size()) {
                         i++;
                     }
-                    resumeList.get(i).getContacts().put(resultSet.getString("type"), resultSet.getString("value"));
+                    resumeList.get(i).getContacts().put(ContactType.valueOf(resultSet.getString("type")), resultSet.getString("value"));
                 }
             }
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section ORDER BY resume_uuid")) {
@@ -114,7 +116,8 @@ public class SqlStorage implements Storage {
                     while (!resumeList.get(i).getUuid().equals(resultSet.getString("resume_uuid")) && i < resumeList.size()) {
                         i++;
                     }
-                    addSection(resultSet, resumeList.get(i));
+                    resumeList.get(i).getSections().put(SectionType.valueOf(resultSet.getString("type")),
+                            JsonParser.read(resultSet.getString("description"), Section.class));
                 }
             }
             resumeList.sort((o1, o2) -> o1.getFullName().equals(o2.getFullName()) ? o1.getUuid().compareTo(o2.getUuid()) : o1.getFullName().compareTo(o2.getFullName()));
@@ -135,6 +138,7 @@ public class SqlStorage implements Storage {
 
     private void addSection(ResultSet resultSet, Resume resume) throws SQLException {
         SectionType sectionType = SectionType.valueOf(resultSet.getString("type"));
+
         switch (sectionType) {
             case PERSONAL, OBJECTIVE -> resume.getSections().put(sectionType, new TextSection(resultSet.getString("description")));
             case QUALIFICATION, ACHIEVEMENT -> {
@@ -158,31 +162,18 @@ public class SqlStorage implements Storage {
     }
 
     private void insertContacts(Connection connection, Resume resume, String uuid) throws SQLException {
-        for (Map.Entry<String, String> entry :
+        for (Map.Entry<ContactType, String> entry :
                 resume.getContacts().entrySet()) {
             doModifyRequest(connection, "INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", false,
-                    uuid, entry.getKey(), entry.getValue());
+                    uuid, entry.getKey().toString(), entry.getValue());
         }
     }
 
     private void insertSections(Connection connection, Resume resume, String uuid) throws SQLException {
         for (Map.Entry<SectionType, Section> entry :
                 resume.getSections().entrySet()) {
-            switch (entry.getKey()) {
-                case PERSONAL, OBJECTIVE -> doModifyRequest(connection, "INSERT INTO section (resume_uuid, type, description) VALUES (?,?,?)",
-                        false, uuid, entry.getKey().toString(), ((TextSection) entry.getValue()).getDescription());
-                case QUALIFICATION, ACHIEVEMENT -> {
-                    List<String> descriptionsList = ((ListSection) entry.getValue()).getDescriptions();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (String s :
-                            descriptionsList) {
-                        stringBuilder.append(s);
-                        stringBuilder.append("\n");
-                    }
-                    doModifyRequest(connection, "INSERT INTO section (resume_uuid, type, description) VALUES (?,?,?)",
-                            false, uuid, entry.getKey().toString(), stringBuilder.toString());
-                }
-            }
+            doModifyRequest(connection, "INSERT INTO section (resume_uuid, type, description) VALUES (?,?,?)",
+                    false, uuid, entry.getKey().toString(), JsonParser.write(entry.getValue(), Section.class));
         }
     }
 
