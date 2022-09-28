@@ -45,9 +45,9 @@
                 <h4><a href="${organization.link}">${organization.name}</a></h4>
                 <c:forEach var="period" items="${organization.periods}">
                     <jsp:useBean id="period" type="com.urise.webapp.model.Period"/>
-                    ${period.title}<br/>
                     <%=period.getDateFrom().format(DateTimeFormatter.ofPattern("MM/yyyy")) + " - " + period.getDateTo().format(DateTimeFormatter.ofPattern("MM/yyyy"))%>
                     <br/>
+                    ${period.title}<br/>
                     <c:if test="${period.description ne ''}">
                         ${period.description}<br/>
                     </c:if>
