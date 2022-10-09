@@ -75,7 +75,9 @@ public class ResumeServlet extends HttpServlet {
                     request.setAttribute("uuid", uuid);
                     request.setAttribute("sectionType", sectionType);
                     request.setAttribute("organizationId", organizationId);
-                    request.setAttribute("period", ((OrganizationSection) resume.getSections().get(SectionType.valueOf(sectionType))).getOrganizations().get(Integer.parseInt(organizationId)).getPeriods().get(Integer.parseInt(periodId)));
+                    request.setAttribute("periodId", periodId);
+                    request.setAttribute("period", ((OrganizationSection) resume.getSections().get(SectionType.valueOf(sectionType)))
+                            .getOrganizations().get(Integer.parseInt(organizationId)).getPeriods().get(Integer.parseInt(periodId)));
                     request.getRequestDispatcher("/WEB-INF/jsp/periodEdit.jsp").forward(request, response);
                 }
                 return;

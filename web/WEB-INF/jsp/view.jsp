@@ -2,6 +2,7 @@
 <%@ page import="com.urise.webapp.model.ListSection" %>
 <%@ page import="com.urise.webapp.model.OrganizationSection" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -45,7 +46,16 @@
                 <h4><a href="${organization.link}">${organization.name}</a></h4>
                 <c:forEach var="period" items="${organization.periods}">
                     <jsp:useBean id="period" type="com.urise.webapp.model.Period"/>
-                    <%=period.getDateFrom().format(DateTimeFormatter.ofPattern("MM/yyyy")) + " - " + period.getDateTo().format(DateTimeFormatter.ofPattern("MM/yyyy"))%>
+                    <%
+                        StringBuilder stringBuilder = new StringBuilder(period.getDateFrom().format(DateTimeFormatter.ofPattern("MM/yyyy")));
+                        stringBuilder.append(" - ");
+                        if (LocalDate.now().getMonth().equals(period.getDateTo().getMonth()) && LocalDate.now().getYear() == period.getDateTo().getYear()){
+                            stringBuilder.append("Сейчас");
+                        }else {
+                            stringBuilder.append(period.getDateTo().format(DateTimeFormatter.ofPattern("MM/yyyy")));
+                        }
+                    %>
+                    <%=stringBuilder.toString()%>
                     <br/>
                     ${period.title}<br/>
                     <c:if test="${period.description ne ''}">
@@ -55,7 +65,7 @@
             </c:forEach>
         </c:when>
     </c:choose>
-        </c:if>
+    </c:if>
     </c:forEach>
     </p>
 </section>
